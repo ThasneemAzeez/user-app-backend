@@ -2,6 +2,7 @@ const express=require("express")
 const cors=require("cors")
 const mongoose=require("mongoose")
 const { usermodel } = require("./models/user")
+const { loginmodel } = require("./models/login")
 
 const app =express()
 app.use(cors())
@@ -30,6 +31,26 @@ app.get("/view",(req,res)=>{
 
     })
 })
+
+app.post("/addlogin",(req,res)=>{
+    let input=req.body
+    let user = new loginmodel(input)
+    user.save()
+    res.json({"status":"success"})
+})
+
+
+app.get("/viewlogin",(req,res)=>{
+    loginmodel.find().then(
+        (data)=>{
+            res.json(data)
+        }
+    ).catch((error)=>{
+        res.json(error)
+
+    })
+})
+
 
 app.listen(8080,()=>{
     console.log("server started")
